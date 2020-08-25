@@ -6,7 +6,9 @@
 
 ## 1주차(발표)
 
-![1stHW](./image/1stHW.png) { : width = "100" height = "200"}
+![1stHW](./image/1stHW.png = 100x200)
+
+
 
 
 ### 사용한 문법들
