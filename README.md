@@ -22,3 +22,9 @@
 
 #### 3. ImageView
 [ImageView](./subReadme/1st/ImageView.md)
+
+
+## 2주차 + 3주차
+
+
+<img src="./image/3rdWeek2.png"  width="300" height = "500"/> <img src="./image/3rdWeek.gif"  width="300" height = "500"/>
