@@ -1,6 +1,8 @@
 # SU Study
 
+## Reference
 
+< a href = "https://developer.apple.com/tutorials/swiftui#drawing-and-animation"> Apple Developer Tutorials </a>
 
 
 
@@ -28,3 +30,17 @@
 
 
 <img src="./image/3rdWeek2.png"  width="300" height = "500"/> <img src="./image/3rdWeek.gif"  width="300" height = "500"/>
+
+
+### 사용한 문법들
+
+#### 1. NavigationView
+
+[NavigationView](./subReadme/2~3/NavigationView.md)
+
+
+#### 2. EnvironmentObject
+
+[EnvironmentObject](./subReadme/2~3/EnvironmentObject.md)
+
+
