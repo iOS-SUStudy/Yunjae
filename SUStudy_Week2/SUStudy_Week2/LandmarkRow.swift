@@ -18,8 +18,21 @@ struct LandmarkRow: View {
                 Text(landmark.name)
                 Text(landmark.state)
             }
-    
             Spacer()
+            
+            if landmark.isFavorite {
+                Image(systemName: "star.fill")
+                    .imageScale(.medium)
+                    .foregroundColor(.yellow)
+            }
+            if landmark.isFeatured {
+                Image(systemName: "heart.fill")
+                .imageScale(.medium)
+                .foregroundColor(.red)
+                
+                
+            }
+            
             
         }
     }
