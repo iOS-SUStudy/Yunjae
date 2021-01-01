@@ -39,6 +39,10 @@ final class GameViewModel: ObservableObject {
 
 먼저 GameViewModel에서 사용될 변수들을 선언해주는 부분이에요. 
 
+
+
+- initialize 부분.
+
 ```swift
 // MARK: -  Init
 extension GameViewModel {
@@ -52,8 +56,9 @@ extension GameViewModel {
 
 
 ```
-initialize 부분.
 
+
+- 변수 선언 부분
 ```swift
 // MARK: - Computeds
 extension GameViewModel {
@@ -93,7 +98,7 @@ extension GameViewModel {
       
       
       
-      
+- 함수 선언 
 
 ```swift
 // MARK: - Public Methods
@@ -199,6 +204,8 @@ let sampleWords = [
 
 ## GameView
 
+- GameView 뷰 구성 부분
+
 ```swift
 import SwiftUI
 
@@ -274,59 +281,88 @@ extension GameView {
 ```
 
 
-
-## Word Scramble: Introduction
-
-From the description:
-
-> The game will show players a random eight-letter word, and ask them to make words out of it.
->
-> For example, if the starter word is “alarming” they might spell “alarm”, “ring”, “main”, and so on.
-
-These "words from another word" are also known as [anagrams](https://en.wikipedia.org/wiki/Anagram).
-
-## Introducing List, your best friend
-
-`List`s are essentially SwiftUI's version of UIKit's TableView. But one neat difference is their ability to seamlessly integrate static and dynamic content within the same `List` element:
-
 ```swift
-List {
-    Section(header: Text("Section 1")) {
-        Text("Static row 1")
-        Text("Static row 2")
-    }
-
-    Section(header: Text("Section 2")) {
-        ForEach(0..<5) {
-            Text("Dynamic row \($0)")
+extension GameView {
+    
+    var restartButton: some View {
+        Button(action: viewModel.startNewRound) {
+            Image(systemName: "arrow.clockwise")
+            Text("Restart")
         }
     }
+}
 
-    Section(header: Text("Section 3")) {
-        Text("Static row 3")
-        Text("Static row 4")
+
+// MARK: - Preview
+struct GameView_Previews: PreviewProvider {
+
+    static var previews: some View {
+        GameView(viewModel: GameViewModel(rootWords: sampleWords))
     }
 }
+
+
 ```
 
-Oh... and, that tight integration with the `Section` element is pretty sweet, too 🙂.
+위에서는 Restart Button을 구현하고 Preview를 구현해요
+여기까지 구현했으면 거의 완성!
+이제 여기까지 만들어준 뷰를 GameContainerView애 넣어주면 됩니다.
 
 
-## Loading resources from your app bundle
-
-Whenever we have something in our app's `Bundle` that we want to deal with in code, we first need to locate it with a URL (which is why it's called a "Uniform Resource Locator").
-
-In many cases, we'd use this URL to create an instance of `Data`, and then decode that data into some kind of structured model based upon the structure of the file.
-
-In this app, though, we'll be grabbing the contents of a plain-text file that lacks the structure of something like JSON.
-
-
-Fortunately, because Swift `String`s are weapons-grade, we can also create them directly from the content's of a file:
+## GameContainerView
 
 ```swift
-if let fileContents = try? String(contentsOf: fileURL) {
-    // we loaded the file into a string!
+import SwiftUI
+
+
+struct GameContainerView: View {
+    @ObservedObject var gameViewModel = GameViewModel()
 }
+
+
+// MARK: - Body
+extension GameContainerView {
+
+    var body: some View {
+        GameView(viewModel: gameViewModel)
+            .onAppear {
+                self.loadWords()
+            }
+    }
+}
+
+
+// MARK: - Private Helpers
+extension GameContainerView {
+    
+    private func loadWords() {
+        Bundle.main.createString(fromFileNamed: "game-words", withExtension: "txt") { result in
+            switch result {
+            case .success(let string):
+                self.gameViewModel.allRootWords = string.components(separatedBy: "\n")
+                self.gameViewModel.startNewRound()
+            case .failure:
+                fatalError()
+            }
+        }
+    }
+}
+
+
+// MARK: - Preview
+struct MainView_Previews: PreviewProvider {
+
+    static var previews: some View {
+        return GameContainerView(gameViewModel: GameViewModel(rootWords: sampleWords))
+    }
+}
+
 ```
+
+여기는 짧아서 한번에 ㅎㅎ 
+아까 우리가 만들어준 GameView를 이용해서 뷰를 구성하는 부분입니다. 
+사실 뷰 구성 요소는 추가된게 없는데, MVVM으로 뷰를 구성하기 위해서 이렇게 만든 것 같아요.
+
+
 
 
